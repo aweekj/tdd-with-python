@@ -51,7 +51,7 @@ class ListViewTest(TestCase):
 
     def test_saving_a_post_request(self):
         self.client.post(
-            '/list/new',
+            '/lists/new',
             data={'item_text': 'A new item'}
         )
         self.assertEqual(Item.objects.count(), 1)
@@ -60,14 +60,10 @@ class ListViewTest(TestCase):
 
     def test_redirects_after_post(self):
         response = self.client.post(
-            '/list/new',
+            '/lists/new',
             data={'item_text': 'A new item'}
         )
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(
-            response['location'],
-            '/lists/the-only-list-in-the-world/'
-        )
+        self.assertRedirects(response, '/lists/the-only-list-in-the-world/')
 
 
 class ItemModelTest(TestCase):
