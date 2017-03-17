@@ -37,6 +37,13 @@ class HomePageTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'A new item')
 
+    def test_home_page_redirects_after_post(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['item_text'] = 'A new item'
+
+        response = home_page(request)
+
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/')
 
