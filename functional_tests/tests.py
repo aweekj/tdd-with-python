@@ -6,10 +6,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.wait import WebDriverWait
 
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
