@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=modo
+Group=www-data
+WorkingDirectory=/home/modo/projects/tdd.aweek-jo.com/source
+ExecStart=/home/modo/projects/tdd.aweek-jo.com/env/bin/gunicorn \
+        --workers 3 \
+        --bind unix:/home/modo/projects/tdd.aweek-jo.com/gunicorn.sock \
+        superlists.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
