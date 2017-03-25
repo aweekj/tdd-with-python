@@ -1,36 +1,12 @@
-import sys
+from .base import FunctionalTest
 from contextlib import contextmanager
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.wait import WebDriverWait
 
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
-
-class NewVisitorTest(StaticLiveServerTestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        for arg in sys.argv:
-            if 'liveserver' in arg:
-                cls.server_url = 'http://' + arg.split('=')[1]
-                return
-        super().setUpClass()
-        cls.server_url = cls.live_server_url
-    #
-    # @classmethod
-    # def tearDownClass(cls):
-    #     if cls.server_url == cls.live_server_url:
-    #         super().tearDownClass()
-
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
-
-    def tearDown(self):
-        self.browser.quit()
+class NewVisitorTest(FunctionalTest):
 
     @contextmanager
     def wait_for_page_load(self, timeout=30):
@@ -38,11 +14,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         yield WebDriverWait(self.browser, timeout).until(
             staleness_of(old_page)
         )
-
-    def check_for_row_in_list_table(self, row_text):
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(row_text, [row.text for row in rows])
 
     def test_can_start_a_list_and_retrieve_it_later(self):
 
@@ -118,33 +89,3 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('Buy milk', page_text)
 
         # Satisfied, they both go back to sleep.
-
-    def test_layout_and_styling(self):
-        # Edith visits to main page
-        self.browser.get(self.server_url)
-        self.browser.set_window_size(1024, 768)
-
-        # She notice that the input box is at the middle of the window
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertAlmostEqual(
-            inputbox.location['x'] + inputbox.size['width'] / 2,
-            512,
-            delta=10
-        )
-
-    def test_cannot_add_empty_list_items(self):
-
-        # Edith goes to the homepage and accidentally tries to submit
-        # an empty list item. She hits Enter on the empty input box
-
-        # The homepage refreshes, and there is an error message saying that
-        # list items can't be blank
-
-        # She tries again with some text for the item, shich now works
-
-        # Perversely, she now decides to submit a second blank list item
-
-        # She receives a similar warning on the list page
-
-        # And she can correct it by filling some text in
-        self.fail('write me!')
