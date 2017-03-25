@@ -26,7 +26,7 @@ def _get_latest_source(source_folder):
         run('cd %s && git fetch' % (source_folder,))
     else:
         run('git clone %s %s' % (REPO_URL, source_folder))
-    current_commit = local("git log -n 1 00format=%H", capture=True)
+    current_commit = local("git log -n 1 --format=%H", capture=True)
     run('cd %s && git reset --hard %s' % (source_folder, current_commit))
 
 
@@ -41,7 +41,7 @@ def _update_settings(source_folder, site_name):
     if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
-        append(secret_key_file, "SECRET_KEY = '%s" % (key,))
+        append(secret_key_file, "SECRET_KEY = '%s'" % (key,))
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')
 
 

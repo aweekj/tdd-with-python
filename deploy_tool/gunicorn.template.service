@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=USERNAME
+Group=www-data
+WorkingDirectory=/home/USERNAME/projects/SITENAME/source
+ExecStart=/home/USERNAME/projects/SITENAME/env/bin/gunicorn \
+        --workers 3 \
+        --bind unix:/home/USERNAME/projects/SITENAME/SITENAME.sock \
+        PROJECTNAME.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

@@ -4,7 +4,7 @@ cryptography==1.8.1
 Django==1.10.6
 gunicorn==19.7.1
 pkg-resources==0.0.0
-Fabric==1.13.1
+Fabric3==1.13.1.post1
 idna==2.5
 packaging==16.8
 paramiko==2.1.2
